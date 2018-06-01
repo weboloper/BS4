@@ -80,16 +80,19 @@ def getHepsiBuradaMostSales(category_name , page_number):
         productLinks.append(link)
         productImages.append(image)
 
-        
+
+    return (productNames, productLinks, productImages)
 
         #row =  [ title  ]
         #print( row )
     #test_df = pd.DataFrame({'name': productNames , 'link' : productLinks , 'image' : productImages     })
+    #return test_df
     #print(test_df.info())
+    #print(test_df)
         
 
 
-#getHepsiBuradaMostSales("mutfak-ekipmanlari-c-237529" , 3)
+#getHepsiBuradaMostSales("mutfak-ekipmanlari-c-237529" , 1)
 
 def getHepsiBuradaMostSalesPageCount(category_name):
     sauce = urllib.request.urlopen("https://www.hepsiburada.com/" + str(category_name) + "?siralama=coksatan")
@@ -104,6 +107,44 @@ def getHepsiBuradaMostSalesPageCount(category_name):
 
 #getHepsiBuradaMostSalesPageCount("mutfak-ekipmanlari-c-237529")
 
-for page_number in range(1,  int(getHepsiBuradaMostSalesPageCount("beyaz-esya-mutfak-urunleri-c-2147483637"))):   
-    getHepsiBuradaMostSales("beyaz-esya-mutfak-urunleri-c-2147483637" , page_number )
-    time.sleep(5)
+
+def writeExcel():
+    df = getHepsiBuradaMostSales("mutfak-ekipmanlari-c-237529" , 1)
+
+    # Create a Pandas Excel writer using XlsxWriter as the engine.
+    writer = pd.ExcelWriter('pandas_simple.xlsx', engine='xlsxwriter')
+
+    # Convert the dataframe to an XlsxWriter Excel object.
+    df.to_excel(writer, sheet_name='Sheet1')
+
+    # Close the Pandas Excel writer and output the Excel file.
+    writer.save()
+
+
+def scrapHepsiBurada(category_name, total_pages):
+
+    productNames = []
+    productLinks = []
+    productImages = []
+
+    productPrice = []
+    productDiscount = []
+    productOldPrice = []
+    
+    productExtraDiscount = []
+    productExtraOldPrice = []
+
+    productIds = []
+    productMerchants = []
+    productBrands = []
+    productCategoriesIds = []
+    productCategories =[]
+    
+    #total_pages = int(getHepsiBuradaMostSalesPageCount(category_name))
+    for page_number in range(1,  total_pages):   
+        row = getHepsiBuradaMostSales( category_name  , page_number )
+        
+        time.sleep(5)
+
+
+scrapHepsiBurada("mutfak-ekipmanlari-c-237529", 5)
