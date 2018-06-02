@@ -12,6 +12,7 @@ def getHepsiBuradaMostSales(category_name , page_number):
     getsauce = sauce.read()
     soup = bs.BeautifulSoup(getsauce, "lxml")
 
+    xxx = 3
     
     productNames = []
     productLinks = []
