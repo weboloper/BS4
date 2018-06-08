@@ -4,24 +4,9 @@ import urllib.request
 import json
 import time
 import pandas as pd
+from static import *
 
-basket = []
-columns = [      
-                "name",
-                "link",
-                "image",
-                
-                "price",
-                "discount",
-                "discountprice",
-                "harddiscount",
-                "harddiscountprice",
 
-                "merchantName",
-                "brandName",
-                "productId",
-                "categoryId",
-                "categoryName"]
 
 
 #url = input("url")
@@ -57,14 +42,16 @@ def getSinglePageResults( url , page = 1 ):
         if item.find('del', attrs = {'class' : 'product-old-price'} ) is not None:
             row['price']    = item.find('del', attrs = {'class' : 'product-old-price'} ).text
             row['discount'] = item.find('div', attrs = {'class' : 'discount-badge'} ).span.text
-        
+
         row['discountprice'] = item.find('span', attrs = {'class' : 'price'} ).text
+        row['finalprice'] = row['discountprice']
 
         hasharddiscount = item.find('div', attrs = {'class' : 'last-price'} )
 
         if  hasharddiscount is not None:
             row['harddiscountprice'] = item.find('div', attrs = {'class' : 'price-value'} ).text
             row['harddiscount'] = item.find('div', attrs = {'class' : 'green-text'} ).span.text
+            row['finalprice'] = row['harddiscountprice']
 
 
         if  button is not None:

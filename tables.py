@@ -1,8 +1,11 @@
 import pandas as pd
 import time, datetime
+from static import *
 
 def makeTable(results):
     df_table = pd.DataFrame( results )
+    df_table.index.name = 'rank'
+    df_table = df_table[columns]
     return df_table
     #print(df_table)
     #print(df.info())
